@@ -1,8 +1,6 @@
-from poker_game import BET, CALL, CHECK, FOLD, RAISE, gen_betting_sequences
+from poker_game import BET, CALL, CHECK, FOLD, RAISE, gen_betting_sequences, PokerGame
 
-
-def test_gen_betting_sequences():
-    expected_sequences_with_pot = {
+EXPECTED_SEQUENCES_WITH_POT = {
         (CHECK, CHECK, CHECK): 60,
         (CHECK, CHECK, BET, FOLD, FOLD): 70,
         (CHECK, CHECK, BET, FOLD, CALL): 80,
@@ -48,6 +46,7 @@ def test_gen_betting_sequences():
         (BET, RAISE, CALL, CALL): 120,
     }
 
+def test_gen_betting_sequences():
     # Generate betting sequences
     generated_sequences = list(
         gen_betting_sequences(
@@ -64,5 +63,21 @@ def test_gen_betting_sequences():
 
     # Assert that the generated sequences match the expected sequences
     assert (
-        generated_sequences == expected_sequences_with_pot
+        generated_sequences == EXPECTED_SEQUENCES_WITH_POT
+    ), f"Generated sequences do not match expected sequences"
+
+
+def test_gen_betting_sequences_oop():
+    # Instantiate the PokerGame object for OOP approach
+    game = PokerGame()
+
+    # Generate betting sequences
+    generated_sequences = list(game.gen_betting_sequences())
+
+    # Convert the generated sequences into a dictionary
+    generated_sequences = {tuple(seq): pot for seq, pot in generated_sequences}
+
+    # Assert that the generated sequences match the expected sequences
+    assert (
+        generated_sequences == EXPECTED_SEQUENCES_WITH_POT
     ), f"Generated sequences do not match expected sequences"
